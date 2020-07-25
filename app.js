@@ -64,12 +64,14 @@ app.post("/file",authentication, upload.single("fileupload"), function (req, res
     res.send(newPost);
   }, 25000);
 });
-app.get("/upload", function (req, res) {
-  console.log(path);
-  res.render("file", {
-    title: "home page",
-  });
-});
+app.get("/", async function (req, res) {
+  try {
+    const all_posts = await posts.findAll()
+    await res.json(all_posts)
+ }
+ catch (err) {
+    console.log(err)
+}});
 app.use(function (err, req, res, next) {
   if ((err.name = "multerError")) return res.send(err.message);
   console.log(err);
